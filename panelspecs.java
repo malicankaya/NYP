@@ -1,10 +1,12 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -12,7 +14,7 @@ import javax.swing.JTextField;
 
 
 
-public class panelspecs extends JPanel {
+public class panelspecs extends JPanel {//giriþ panelinin bütün özellikleri
 
 	private JTextField jtext1;
 	private JPasswordField jpw1;
@@ -60,10 +62,15 @@ public class panelspecs extends JPanel {
 			if(arg0.getSource() == giris){
 			String k_adi = jtext1.getText();
 			String parola = jpw1.getText();
+			//veri tabanýnda kullanýcý adý ve parolayý ara, bulursa devam et
+				MasaSecimi masasecildi = new MasaSecimi();
+				masasecildi.masayisec();
 			}
-			else{
+			
+			
+			if(arg0.getSource() == uyeol){
 				cluyeol kayit = new cluyeol();
-				kayit.cluyeol();
+				kayit.uyekaydi();
 			}
 		}
 	}

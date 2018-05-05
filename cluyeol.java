@@ -17,14 +17,14 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
 
-public class cluyeol { //üye iþlemleri için gerekenler
+public class cluyeol { //üye olma ekraný ve üye iþlemleri için gerekenler
 
 	private static JTextField jtext1;
 	private static JPasswordField jpw1;
 	private static JPasswordField jpw2;
 	private static JButton uyeol;
 	
-	static void cluyeol(){
+	void uyekaydi(){
 	JFrame frm = new JFrame();
 	frm.getContentPane().setBackground(Color.decode("#800000"));
 	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -72,25 +72,21 @@ public class cluyeol { //üye iþlemleri için gerekenler
 			String sifre1 = jpw1.getText();
 			String sifre2 = jpw2.getText();
 			if(!(sifre1.equals(sifre2)))
-				JOptionPane.showMessageDialog(null, "Ýki þifre de ayný olmalýdýr.","UYARI",0,null);
+				JOptionPane.showMessageDialog(null, "Ýki þifre de ayný olmalýdýr.","UYARI",0);
 			else{
 				String kullaniciadi=jtext1.getText();
 				Boolean kadivarmi=false;
-				/*eðer kullaniciadi'ný yukarda tanýmlarsam baglan'ý try içinden buraya yazabiliyorum
-				  ama kullaniciadi'ni buraya alýr almaz , baðlan try/catch istiyor, neden?
-				  bunu istememin nedeni statement'ý ve baglan'ý aþaðýda da kullanýyorum.*/
 				try{
 					Connection baglan = (Connection) DBConnection.baglanti();
 					PreparedStatement statement = (PreparedStatement) baglan.prepareStatement("SELECT k_adi FROM `uyeler`");
 					ResultSet result = statement.executeQuery();
 					while(result.next()){
 						if(kullaniciadi.equals(result.getString("k_adi"))){
-							JOptionPane.showMessageDialog(null, "Bu kullanýcý adý mevcuttur.","UYARI",0,null);
+							JOptionPane.showMessageDialog(null, "Bu kullanýcý adý mevcuttur.","UYARI",0);
 							kadivarmi=true;
 						}
 					}
 				}catch(Exception e){}
-				
 				if(!kadivarmi){
 					try {
 						Connection baglan = (Connection) DBConnection.baglanti();
