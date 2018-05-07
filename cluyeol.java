@@ -28,7 +28,7 @@ public class cluyeol { //üye olma ekraný ve üye iþlemleri için gerekenler
 	JFrame frm = new JFrame();
 	frm.getContentPane().setBackground(Color.decode("#800000"));
 	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	
+	frm.setTitle("Kayýt Ol");
 	frm.setLayout(new GridBagLayout());
 	GridBagConstraints c = new GridBagConstraints();
 	c.insets = new Insets(5,5,5,5);

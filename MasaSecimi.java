@@ -51,7 +51,6 @@ public class MasaSecimi { //ikinci bir actionhandler gerektiði için ayrý class i
 		public void actionPerformed(ActionEvent arg0) {
 			
 			Game masasecildi = new Game();
-			oyunalani.setVisible(false);
 			if (arg0.getSource()==iki_dort)
 				masasecildi.oyunabasla(200);
 			if (arg0.getSource()==bes_bin)

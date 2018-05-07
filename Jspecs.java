@@ -20,6 +20,7 @@ public class Jspecs extends JFrame {//frame'in bütün özellikleri
 			getContentPane().setBackground(Color.decode("#800000")); 
 			setSize(1024,768); // minimize ekranýn boyutunu ayarlýyor.
 			setExtendedState(JFrame.MAXIMIZED_BOTH); //tam ekran yapýyor
+			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		}
 		private class WindowHandler implements WindowListener{
 			public void windowOpened(WindowEvent e){
@@ -36,6 +37,7 @@ public class Jspecs extends JFrame {//frame'in bütün özellikleri
 				if (confirmed == JOptionPane.YES_OPTION)
 					dispose();
 				}
+				
 
 			@Override
 			public void windowActivated(WindowEvent e) {
