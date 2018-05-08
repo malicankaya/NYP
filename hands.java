@@ -424,6 +424,9 @@ public class hands {
 		eldegerleri = highcard();
 		if(eldegerleri[0]==1)
 			return eldegerleri;
+		else{
+			eldegerleri[0] = -1;
+		}
 		return eldegerleri;
 	}
 }

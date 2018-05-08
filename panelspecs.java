@@ -5,11 +5,16 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 
 
 
@@ -57,10 +62,35 @@ public class panelspecs extends JPanel {//giriþ panelinin bütün özellikleri
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			Boolean kullanicikontrol=false;
+			Boolean sifrekontrol=false;
 			if(arg0.getSource() == giris){
-			String k_adi = jtext1.getText();
-			String parola = jpw1.getText();
-			//veri tabanýnda kullanýcý adý ve parolayý ara, bulursa devam et
+				String k_adi = jtext1.getText();
+				String parola = jpw1.getText();
+				/*try{
+					Connection baglan = (Connection) DBConnection.baglanti();
+					PreparedStatement statement = (PreparedStatement) baglan.prepareStatement("SELECT k_adi FROM `uyeler`");
+					ResultSet result = statement.executeQuery();
+					while(result.next()){
+						if(k_adi.equals(result.getString("k_adi"))){
+							kullanicikontrol=true;
+							break;
+						}
+					}
+					statement = (PreparedStatement) baglan.prepareStatement("SELECT parola FROM `uyeler`");
+					result = statement.executeQuery();
+					while(result.next())
+						if(parola.equals(result.getString("parola"))){
+							sifrekontrol=true;
+							break;
+						}
+				
+				}catch(Exception e){}
+				
+				if(kullanicikontrol && sifrekontrol){
+					MasaSecimi masasecildi = new MasaSecimi();
+					masasecildi.masayisec();
+				}*/
 				MasaSecimi masasecildi = new MasaSecimi();
 				masasecildi.masayisec();
 			}

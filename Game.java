@@ -9,6 +9,7 @@ import java.util.Collections;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -137,17 +138,7 @@ public class Game implements ActionListener {
 		gor.addActionListener(this);
 		pas.addActionListener(this);
 		cekil.addActionListener(this);
-		y=380;
-   		x=650;
-   		/*for(i=10;i<13;i++){//masadaki ilk 3 kartýn indexi
-   			oyunpenceresi.remove(cizilmiskartlar.get(i));
-   			resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+yerkartlari.get(i-10)._sayisi+".png";
-   			cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
-   			cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
-   			oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
-   			imgdraw = new ResimCizdirme();
-   			x+=120;
-   		}*/
+		
 	}
 	
 	
@@ -155,6 +146,8 @@ public class Game implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == gor){
 			if(bahisdongusu == 0){
+				oyunpenceresi.setVisible(false);
+				oyunpenceresi.setVisible(true);
 	       		oyuncuparalari[0] -=globalmasadegeri;
 	       		pot +=globalmasadegeri;
 	       		potlabel.setText(""+pot+"$");
@@ -163,23 +156,91 @@ public class Game implements ActionListener {
 	       		for(i=10;i<13;i++){//masadaki ilk 3 kartýn indexi
 	       			oyunpenceresi.remove(cizilmiskartlar.get(i));
 	       			resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+yerkartlari.get(i-10)._sayisi+".png";
-	       			cizilmiskartlar.set(i,imgdraw.Cizdir(resimkonum));
+	       			cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
+	       			cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
+	       			oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
 	       			imgdraw = new ResimCizdirme();
 	       			x+=120;
 	       		}
 		}
-			if(bahisdongusu == 1){
+			else if(bahisdongusu < 3){
+				oyunpenceresi.setVisible(false);
+				oyunpenceresi.setVisible(true);
 				for(int i=0;i<5;i++){
 					oyuncuparalari[i] -=globalmasadegeri*2;
 					pot +=globalmasadegeri*2;
 				}
 				potlabel.setText(""+pot+"$");
+				oyunpenceresi.remove(cizilmiskartlar.get(12+bahisdongusu));
+	   			resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+yerkartlari.get(2+bahisdongusu)._sayisi+".png";
+	   			cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
+	   			cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
+	   			oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
+	   			imgdraw = new ResimCizdirme();
+	   			x+=120;
+	   			oyunpenceresi.setVisible(false);
+				oyunpenceresi.setVisible(true);
        	 	}
-       	 
-           bahisdongusu++;
-		}
+			else if (bahisdongusu == 3){
+				oyunpenceresi.setVisible(false);
+				oyunpenceresi.setVisible(true);
+				x=50;
+				y=600;
+				for(i=0;i<2;i++){
+					for(j=0;j<2;j++){
+						oyunpenceresi.remove(cizilmiskartlar.get(2+(i*2+j)));
+						resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+oyuncular.get((i*3)+1).oyuncukart.get(j)._sayisi+".png";
+						cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
+						cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
+						oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
+						imgdraw = new ResimCizdirme();
+						x+=120;
+					}
+					x=1600;
+				}
+				x=250;
+				y=50;
+				for(i=0;i<2;i++){
+					for(j=0;j<2;j++){
+						oyunpenceresi.remove(cizilmiskartlar.get(6+(i*2+j)));
+						resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+oyuncular.get(i+2).oyuncukart.get(j)._sayisi+".png";
+						cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
+						cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
+						oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
+						imgdraw = new ResimCizdirme();
+						x+=120;
+					}
+					x=1400;
+				}
+				bahisdongusu++;
+			}
 			
-	}
-	
-}
+			else if(bahisdongusu == 4){
+				int i,indis = 0,esitlikindis = 0;
+				int j=-1;
+				int [][] eldegeriarray = new int[5][4];
+				hands findwinner = new hands();
+				for(i=0;i<5;i++){
+					eldegeriarray[i] = findwinner.kontrolEt(oyuncular.get(i), yerkartlari);
+					findwinner = new hands();
+				}
+				for(i=0;i<5;i++){
+					if(eldegeriarray[i][0] == j)
+						esitlikindis = i;
+					if(eldegeriarray[i][0]>j){
+						j=eldegeriarray[i][0];
+						indis=i;
+					}
+				}
 
+				if(eldegeriarray[0][1] == -1 ){
+					String mesaj = "Kazanan oyuncu"+oyuncular.get(indis).oyuncunumarasi+"";
+					JOptionPane.showMessageDialog(null, mesaj,"TEBRÝKLER",0);
+				}
+					
+			}
+			bahisdongusu++;
+		}
+	}
+			
+}
