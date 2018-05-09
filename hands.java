@@ -10,105 +10,61 @@ public class hands {
 	int[] royalorstraightflush(){
 		int[] dondur = new int[4]; //birincisi el deðeri, ikincisi en yüksek kartý(iki tane ayný el çýkarsa diye), diðeri baþka eller için.
 		int i,j,tursayac=0,siralisayac=0;
-		ArrayList<playcards> turler = new ArrayList<playcards>();
+		ArrayList<playcards> tumkartlar = new ArrayList<playcards>();
 		ArrayList<Integer> siralidizi = new ArrayList<Integer>();
-		
-		for(i=1;i<4;i++)
-			if(masabesli.get(0)._tur.equals(masabesli.get(i)._tur))
-				tursayac++;
-		
-		for(i=0;i<4;i++)
-			if(masabesli.get(i)._degeri- masabesli.get(i+1)._degeri==1){
-				siralidizi.add(masabesli.get(i)._degeri);
-				siralisayac ++;
-			}
-		if(siralisayac == 5 && tursayac==4){
-			siralidizi.add(masabesli.get(4)._degeri);
-			Collections.sort(siralidizi);
-			if(siralidizi.get(4)==13){ //sýralý ve en büyük kart AS ise
-				dondur[0] = 10; //yerdeki 5 kart, royalflush
-				return dondur;
-			}
-		}
-		
-		tursayac=0;
-		siralisayac=0;
-		turler.clear();
-		siralidizi.clear();
-		if (p.oyuncukart.get(0)._tur.equals(p.oyuncukart.get(1)._tur)){
-			for(i=0;i<5;i++){
-				if(p.oyuncukart.get(0)._tur.equals(masabesli.get(i))){
-					playcards temp = masabesli.get(i);
+		ArrayList<Integer> straightsiralidizi = new ArrayList<Integer>();
+		for(i=0;i<2;i++)
+			tumkartlar.add(p.oyuncukart.get(i));
+		for(i=0;i<5;i++)
+			tumkartlar.add(masabesli.get(i));
+		for(i=0;i<3;i++){
+			siralidizi.add(tumkartlar.get(i)._sayisi);
+			for(j=i+1;j<7;j++)
+				if(tumkartlar.get(i)._tur.equals(tumkartlar.get(j)._tur)){
 					tursayac++;
-					turler.add(temp);
+					siralidizi.add(tumkartlar.get(j)._degeri);
 				}
+			if(i==0 && tursayac>=4)
+				break;
+			if(i==1 && tursayac>=4)
+				break;
+			if(i==1 && tursayac>=4)
+				break;
+			tursayac=0;
+			siralidizi.clear();
+		}
+		
+		if(tursayac>=4){
+			Collections.sort(siralidizi);
+			straightsiralidizi.add(siralidizi.get(0));
+			for(i=0;i<siralidizi.size()-1;i++){
+				if(siralidizi.get(i)- siralidizi.get(i+1)==-1){ 
+					straightsiralidizi.add(i+1);
+					siralisayac ++;
+				}
+				else if(siralisayac <4){
+					straightsiralidizi.clear();
+					siralisayac=0;
+					straightsiralidizi.add(siralidizi.get(i+1));
+				}
+				else//siralisayac 4 oldu ve if'e girmediyse artýk sýralý elimizi aldýk demektir.
+					break;
 			}
-			if(tursayac == 3){
-				for(j=0;j<2;j++)
-					siralidizi.add(p.oyuncukart.get(j)._degeri);
-				for(i=0;i<3;i++){
-					siralidizi.add(turler.get(i)._degeri);
+				
+			if(siralisayac >=4){
+				if(straightsiralidizi.get(straightsiralidizi.size()-1)==13){ //sýralý ve en büyük kart AS ise
+					dondur[0] = 10;
+					return dondur;
 				}
-				Collections.sort(siralidizi);
-				for(i=0;i<3;i++){
-					if(siralidizi.get(i)-siralidizi.get(i+1)==1)
-						siralisayac++;
-				}
-				if (siralisayac == 3){
-					if(siralidizi.get(3)==13){
-						dondur[0]=10;
-						return dondur; //royalflush oldu
-					}
-					else{ //straight flush oldu
-						dondur[0]=9;
-						dondur[1]=siralidizi.get(3); //eðer 2 tane straight flush olursa, kazananý belirleyecek
-						return dondur; 
-					}
+				else{
+					dondur[0]=9;//straight flush oldu
+					dondur[1]=straightsiralidizi.get(straightsiralidizi.size()-1);
+					return dondur;
 				}
 			}
 		}
-		
-		tursayac=0;
-		siralisayac=0;
-		turler.clear();
-		siralidizi.clear();
-		if (!(p.oyuncukart.get(0)._tur.equals(p.oyuncukart.get(0)._tur))){ //oyuncunun kartlarý birbirinden farklýysa
-			for(j=0;j<2;j++){ // farklý olan iki kart için de türlerini deneyecek
-				for(i=0;i<5;i++){
-					if(p.oyuncukart.get(j)._tur.equals(masabesli.get(i)._tur)){
-						playcards temp = masabesli.get(i);
-						tursayac++;
-						turler.add(temp);
-					}
-				}
-				if(tursayac == 4){
-					siralidizi.add(p.oyuncukart.get(j)._degeri);
-					for(i=0;i<4;i++){
-						siralidizi.add(turler.get(i)._degeri);
-					}
-					Collections.sort(siralidizi);
-					for(i=0;i<4;i++){
-						if(siralidizi.get(i)-siralidizi.get(i+1)==1)
-							siralisayac++;
-					}
-					if (siralisayac == 4){
-						if(siralidizi.get(3)==13){
-							dondur[0]=10;
-							return dondur; //royalflush oldu
-						}
-						else{ //straight flush oldu
-							dondur[0]=9;
-							dondur[1]=siralidizi.get(3); //eðer 2 tane straight flush olursa, kazananý belirleyecek
-							return dondur; 
-						}
-					}
-				}
-			}
-		}
-		
 		return dondur;
 	}
-	
 	int[] fourofakind(){
 		int[] dondur = new int[4];
 		int i,j,k,sayac=0;
@@ -119,106 +75,61 @@ public class hands {
 		for(i=0;i<5;i++)
 			siralidizi.add(masabesli.get(i)._degeri);
 		Collections.sort(siralidizi);
-		if(p.oyuncukart.get(0)==p.oyuncukart.get(1)){
-			for(i=0;i<5;i++){
-				if(p.oyuncukart.get(0)._degeri==masabesli.get(i)._degeri)
+		for(i=0;i<4;i++){
+			for(j=i+1;j<7;j++)
+				if(siralidizi.get(i) == siralidizi.get(j)){
 					sayac++;
-			}
-			if(sayac==2){
-				dondur[0]=8;
-				dondur[1]=p.oyuncukart.get(0)._degeri;
-				for(k=7;k<0;k--){
-					if(siralidizi.get(k)!=p.oyuncukart.get(0)._degeri){ //en büyük deðer 4lü olabilir.
-						dondur[2] = siralidizi.get(k);
-						break;
-					}
 				}
-			}
-			return dondur;
-		}
-		
-		sayac=0;
-		if(p.oyuncukart.get(0)!=p.oyuncukart.get(1)){
-			for(j=0;j<2;j++){
-				for(i=0;i<5;i++){
-					if(p.oyuncukart.get(j)._degeri==masabesli.get(i)._degeri)
-						sayac++;
-				}
-				if(sayac==3){
+				if(sayac ==3){
 					dondur[0]=8;
-					dondur[1]=p.oyuncukart.get(j)._degeri;
-					for(k=7;k<0;k--){
-						if(siralidizi.get(k)!=p.oyuncukart.get(j)._degeri){
-							dondur[2] = siralidizi.get(k);
-							break;
+					for(k=6;k<-1;i++)
+						if(siralidizi.get(i)!=siralidizi.get(k)){
+							dondur[1]=siralidizi.get(k);
+							return dondur;
 						}
-					}
 				}
-			}
-			return dondur;
+				else
+					sayac=0;
 		}
 		return dondur;
 	}
 
 	int[] fullhouse(){
 		int[] dondur = new int[4];
-		int[] ikitane = new int[2]; //iki tane üçlü kart için açtýðýmýz dizi.
-		int i,j,sayac=0,sayac2=0;
-		ArrayList<playcards> butunkartlar = new ArrayList<playcards>();
-		for(i=0;i<2;i++)
-			butunkartlar.add(p.oyuncukart.get(i));
-		for(i=0;i<5;i++)
-			butunkartlar.add(p.oyuncukart.get(i));
-		/* bütün kartlarý tek dizide topladýk, iki tane üçlü kart olabilir. AAA 5 KKK gibi. o zaman en iyi el AAAKK
-		 olur. KKKAA bulursa yanlýþ olur. */
-		 
-		for(i=0;i<5;i++){
-			for(j=i+1;j<7;j++)
-				if(butunkartlar.get(i)._degeri == butunkartlar.get(j)._degeri)
-					sayac++;
-			if(sayac==3){
-				ikitane[sayac2] = butunkartlar.get(i)._degeri;
-				sayac2++;
-			}
-			sayac=0;
-		}
-		if(sayac2==2){
-			Arrays.sort(ikitane);
-			dondur[0]=7;
-			dondur[1]=ikitane[1]; //üçlünün deðeri
-			dondur[2]=ikitane[0]; //ikilinin deðeri
-			return dondur;
-		}
+		int i,j,k = 0,sayac=0;
+		ArrayList<Integer> siralidizi = new ArrayList<Integer>();
 		
-		if(sayac2==1){//sayaç bir ise yerde bir üçlü var(mesela 444), ve iki tane de baþka ayný kart varsa(55)fullhouse olur.
-			sayac=sayac2=0;
-			dondur[1]=ikitane[0]; //üçlünün deðeri
-			for(i=0;i<7;i++)
-				if(ikitane[0]==butunkartlar.get(i)._degeri)
-					butunkartlar.remove(i);
-			
-			for(i=0;i<3;i++){
-				for(j=i+1;j<4;j++)
-					if(butunkartlar.get(i)._degeri == butunkartlar.get(j)._degeri)
-						sayac++;
-				if(sayac==2){
-					ikitane[sayac2] = butunkartlar.get(i)._degeri;
-					sayac2++;
+		siralidizi.add(p.oyuncukart.get(0)._degeri);
+		siralidizi.add(p.oyuncukart.get(1)._degeri);
+		for(i=0;i<5;i++)
+			siralidizi.add(masabesli.get(i)._degeri);
+		Collections.sort(siralidizi);
+		for(i=0;i<4;i++){
+			for(j=i+1;j<7;j++){
+				if(sayac ==2){
+					k=siralidizi.get(i);
+					break;
 				}
+				if(siralidizi.get(i) == siralidizi.get(j))
+					sayac++;
 			}
-			
-			if(sayac2==2){
-				Arrays.sort(ikitane);
-				dondur[0]=7;
-				dondur[2]=ikitane[1]; //ikilinin deðeri
-				return dondur;
+			if(sayac==2)
+				break;
+		}
+		sayac=0;
+		for(i=0;i<4;i++){
+			for(j=i+1;j<7;j++){
+				if(sayac ==1 && k !=siralidizi.get(i)){
+					dondur[0]=7;
+					dondur[1]=k;
+					dondur[2]=siralidizi.get(i);
+					return dondur;
+				}
+				if(siralidizi.get(i) == siralidizi.get(j))
+					sayac++;
+				else
+					sayac=0;
 			}
-			if(sayac2==1){
-				dondur[0]=7;
-				dondur[2]=ikitane[0]; //ikilinin deðeri
-				return dondur;
-			}
-			
 		}
 		return dondur;
 	}
@@ -231,14 +142,15 @@ public class hands {
 		for(i=0;i<2;i++)
 			butunkartlar.add(p.oyuncukart.get(i));
 		for(i=0;i<5;i++)
-			butunkartlar.add(p.oyuncukart.get(i));
+			butunkartlar.add(masabesli.get(i));
 		for(i=0;i<3;i++){
-			for(j=i+1;j<7;j++)
+			for(j=i+1;j<7;j++){
 				flushbesli.add(butunkartlar.get(i)._degeri);
 				if(butunkartlar.get(i)._tur.equals(butunkartlar.get(j)._tur)){
 					flushbesli.add(butunkartlar.get(j)._degeri);
 					sayac++;
 				}
+			}
 			if(sayac>4){
 				Collections.sort(flushbesli);
 				dondur[0]=6;
@@ -258,10 +170,11 @@ public class hands {
 		for(i=0;i<2;i++)
 			butundegerler.add(p.oyuncukart.get(i)._degeri);
 		for(i=0;i<5;i++)
-			butundegerler.add(p.oyuncukart.get(i)._degeri);
+			butundegerler.add(masabesli.get(i)._degeri);
+		
 		Collections.sort(butundegerler);
 		
-		for(i=0;i<6;i++){
+		for(i=0;i<butundegerler.size()-1;i++){
 			if((butundegerler.get(i)-butundegerler.get(i+1))==1){
 				siralisayac++;
 			}
@@ -304,7 +217,7 @@ public class hands {
 		for(i=0;i<2;i++)
 			siralidizi.add(p.oyuncukart.get(i)._degeri);
 		for(i=0;i<5;i++)
-			siralidizi.add(p.oyuncukart.get(i)._degeri);
+			siralidizi.add(masabesli.get(i)._degeri);
 		for(i=0;i<5;i++){
 			for(j=i+1;j<7;j++)
 				if(siralidizi.get(i) == siralidizi.get(j))
@@ -341,7 +254,7 @@ public class hands {
 		for(i=0;i<2;i++)
 			pairdizi.add(p.oyuncukart.get(i)._degeri);
 		for(i=0;i<5;i++)
-			pairdizi.add(p.oyuncukart.get(i)._degeri);
+			pairdizi.add(masabesli.get(i)._degeri);
 		for(i=0;i<6;i++){
 			for(j=i+1;j<7;j++){
 				if(pairdizi.get(i)==pairdizi.get(j)){
@@ -389,7 +302,7 @@ public class hands {
 		for(i=0;i<2;i++)
 			siralidizi.add(p.oyuncukart.get(i)._degeri);
 		for(i=0;i<5;i++)
-			siralidizi.add(p.oyuncukart.get(i)._degeri);
+			siralidizi.add(masabesli.get(i)._degeri);
 		Collections.sort(siralidizi);
 		dondur[0]=1;
 		dondur[1]=siralidizi.get(6);

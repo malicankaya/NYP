@@ -138,7 +138,6 @@ public class Game implements ActionListener {
 		gor.addActionListener(this);
 		pas.addActionListener(this);
 		cekil.addActionListener(this);
-		
 	}
 	
 	
@@ -162,7 +161,7 @@ public class Game implements ActionListener {
 	       			imgdraw = new ResimCizdirme();
 	       			x+=120;
 	       		}
-		}
+			}
 			else if(bahisdongusu < 3){
 				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
@@ -172,15 +171,15 @@ public class Game implements ActionListener {
 				}
 				potlabel.setText(""+pot+"$");
 				oyunpenceresi.remove(cizilmiskartlar.get(12+bahisdongusu));
-	   			resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+yerkartlari.get(2+bahisdongusu)._sayisi+".png";
-	   			cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
-	   			cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
-	   			oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
-	   			imgdraw = new ResimCizdirme();
-	   			x+=120;
-	   			oyunpenceresi.setVisible(false);
+				resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+yerkartlari.get(2+bahisdongusu)._sayisi+".png";
+				cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
+				cizilmiskartlar.get(cizilmiskartsayac).setBounds(new Rectangle(x,y,119,175));
+				oyunpenceresi.add(cizilmiskartlar.get(cizilmiskartsayac++));
+				imgdraw = new ResimCizdirme();
+				x+=120;
+				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
-       	 	}
+			}
 			else if (bahisdongusu == 3){
 				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
@@ -211,11 +210,11 @@ public class Game implements ActionListener {
 						x+=120;
 					}
 					x=1400;
-				}
+				}	
 				bahisdongusu++;
 			}
 			
-			else if(bahisdongusu == 4){
+				if(bahisdongusu == 4){
 				int i,indis = 0,esitlikindis = 0;
 				int j=-1;
 				int [][] eldegeriarray = new int[5][4];
@@ -223,23 +222,27 @@ public class Game implements ActionListener {
 				for(i=0;i<5;i++){
 					eldegeriarray[i] = findwinner.kontrolEt(oyuncular.get(i), yerkartlari);
 					findwinner = new hands();
-				}
+				}	
 				for(i=0;i<5;i++){
-					if(eldegeriarray[i][0] == j)
-						esitlikindis = i;
 					if(eldegeriarray[i][0]>j){
 						j=eldegeriarray[i][0];
 						indis=i;
 					}
 				}
-
-				if(eldegeriarray[0][1] == -1 ){
+				for(i=0;i<5;i++){
+					if(eldegeriarray[i][0]==j && i!=indis)
+						esitlikindis = i;
+				}
+				if(esitlikindis == 0 ){
 					String mesaj = "Kazanan oyuncu"+oyuncular.get(indis).oyuncunumarasi+"";
 					JOptionPane.showMessageDialog(null, mesaj,"TEBRÝKLER",0);
 				}
-					
 			}
 			bahisdongusu++;
+		}
+		
+		if(e.getSource() == pas){
+			
 		}
 	}
 			
