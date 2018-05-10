@@ -1,9 +1,7 @@
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.awt.Rectangle;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;

@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -11,7 +10,6 @@ import javax.swing.JPanel;
 public class ResimCizdirme{
 	BufferedImage image;
 	JPanel Cizdir(String resimkonum){
-		
 			try {
 				image = ImageIO.read(new File(resimkonum));
 			} catch (IOException e) {

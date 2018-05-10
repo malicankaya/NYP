@@ -8,7 +8,7 @@ import javax.swing.JButton;
 
 
 
-public class MasaSecimi { //ikinci bir actionhandler gerektiði için ayrý class içinde masa seçimini yaptýk. panelspecs içinde olmadý
+public class MasaSecimi { 
 	
 	JButton iki_dort,bes_bin,bin_ikibin,besbin_onbin;
 	Jspecs oyunalani = new Jspecs();

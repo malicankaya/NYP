@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,6 +14,7 @@ import javax.swing.JPanel;
 
 public class Game implements ActionListener {
 	ArrayList<players> oyuncular = new ArrayList<players>();
+	ArrayList<JLabel> oyuncuparalarlabel = new ArrayList<JLabel>();
 	players p = new players();
 	int i,j,x,y;
 	ArrayList<playcards> yerkartlari=new ArrayList<playcards>();
@@ -37,9 +37,8 @@ public class Game implements ActionListener {
 	void oyunabasla(int masadegeri){
 		oyuncuparalari = new int[5];
 		globalmasadegeri = masadegeri;
-		for(i=0;i<5;i++){
+		for(i=0;i<5;i++)
 			oyuncuparalari[i] = masadegeri * 100;
-		}
 		gor = new JButton("GÖR");
 		pas = new JButton("PAS");
 		cekil = new JButton("ÇEKÝL");
@@ -47,7 +46,7 @@ public class Game implements ActionListener {
 		potlabel = new JLabel(""+masadegeri*9+"$");
 		Collections.shuffle(kartlar.desteolustu);
 		for(i=0;i<5;i++){
-			p.oyuncunumarasi = i;
+			p.oyuncunumarasi = i+1;
 			for(j=0;j<2;j++){
 				p.oyuncukart.add(kartlar.desteolustu.get(i));
 				kartlar.desteolustu.remove(i);
@@ -60,6 +59,7 @@ public class Game implements ActionListener {
 			yerkartlari.add(kartlar.desteolustu.get(i));
 			kartlar.desteolustu.remove(i);
 		}
+		Font jlabelfont = new Font("Serif", Font.ITALIC, 21);
 		oyunpenceresi.getContentPane().setLayout(null);
 		oyunpenceresi.setVisible(true);
 		masadegerilabel.setFont(new Font("Serif", Font.ITALIC, 25));
@@ -76,6 +76,14 @@ public class Game implements ActionListener {
 		oyunpenceresi.add(pas);
 		oyunpenceresi.add(cekil);
 		oyunpenceresi.add(gor);
+		for(i=0;i<5;i++){
+			oyuncuparalarlabel.add(new JLabel());
+			oyuncuparalarlabel.get(i).setFont(jlabelfont);
+		}
+		oyuncuparalarlabel.get(0).setBounds(new Rectangle(900,970,300,50));
+		oyuncuparalarlabel.get(0).setForeground(Color.WHITE);
+		oyunpenceresi.add(oyuncuparalarlabel.get(0));
+		
 		imgdraw = new ResimCizdirme();
 		JPanel carddealer = new JPanel();
 		carddealer = imgdraw.Cizdir("C:\\Users\\Mali\\Desktop\\Deck\\carddealer.png");
@@ -138,18 +146,20 @@ public class Game implements ActionListener {
 		gor.addActionListener(this);
 		pas.addActionListener(this);
 		cekil.addActionListener(this);
+		oyuncuparalarlabel.get(0).setText(""+oyuncuparalari[0]+"$");
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == gor){
-			if(bahisdongusu == 0){
+			if(bahisdongusu == 0 && oyuncuparalari[0]>globalmasadegeri){
 				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
 	       		oyuncuparalari[0] -=globalmasadegeri;
 	       		pot +=globalmasadegeri;
 	       		potlabel.setText(""+pot+"$");
+	       		oyuncuparalarlabel.get(0).setText(""+oyuncuparalari[0]+"$");
 	       		y=380;
 	       		x=650;
 	       		for(i=10;i<13;i++){//masadaki ilk 3 kartýn indexi
@@ -162,7 +172,7 @@ public class Game implements ActionListener {
 	       			x+=120;
 	       		}
 			}
-			else if(bahisdongusu < 3){
+			else if(bahisdongusu < 3 && oyuncuparalari[0]>globalmasadegeri*2){
 				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
 				for(int i=0;i<5;i++){
@@ -170,6 +180,7 @@ public class Game implements ActionListener {
 					pot +=globalmasadegeri*2;
 				}
 				potlabel.setText(""+pot+"$");
+				oyuncuparalarlabel.get(0).setText(""+oyuncuparalari[0]+"$");
 				oyunpenceresi.remove(cizilmiskartlar.get(12+bahisdongusu));
 				resimkonum = "C:\\Users\\Mali\\Desktop\\Deck\\"+yerkartlari.get(2+bahisdongusu)._sayisi+".png";
 				cizilmiskartlar.add(imgdraw.Cizdir(resimkonum));
@@ -180,9 +191,15 @@ public class Game implements ActionListener {
 				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
 			}
-			else if (bahisdongusu == 3){
+			else if (bahisdongusu == 3 && oyuncuparalari[0]>globalmasadegeri*2){
 				oyunpenceresi.setVisible(false);
 				oyunpenceresi.setVisible(true);
+				for(int i=0;i<5;i++){
+					oyuncuparalari[i] -=globalmasadegeri*2;
+					pot +=globalmasadegeri*2;
+				}
+				potlabel.setText(""+pot+"$");
+				oyuncuparalarlabel.get(0).setText(""+oyuncuparalari[0]+"$");
 				x=50;
 				y=600;
 				for(i=0;i<2;i++){
@@ -233,10 +250,26 @@ public class Game implements ActionListener {
 					if(eldegeriarray[i][0]==j && i!=indis)
 						esitlikindis = i;
 				}
-				if(esitlikindis == 0 ){
-					String mesaj = "Kazanan oyuncu"+oyuncular.get(indis).oyuncunumarasi+"";
-					JOptionPane.showMessageDialog(null, mesaj,"TEBRÝKLER",0);
-				}
+				//if(esitlikindis == 0 ){//el deðerleri eþitse, kartlara bakar
+					String[] elisimleri ={"","1.)HighCard","2.)OnePair","3.)TwoPair",
+										  "4.)ThreeofaKind","5.)Straight","6.)Flush",
+										  "7.)FullHouse","8.)FourofaKind","9.)StraightFlush","10.)RoyalFlush"};
+					String[] uyarimesaj = {"Oyuna Devam","Tamam"};
+					
+					String mesaj = "Kazanan oyuncu "+oyuncular.get(indis).oyuncunumarasi+
+									". El büyüklüðü "+elisimleri[eldegeriarray[indis][0]]+"";
+					
+					int confirmed = JOptionPane.showOptionDialog(null,mesaj,"TEBRÝKLER", 0,
+																JOptionPane.INFORMATION_MESSAGE,null,uyarimesaj,null);
+					oyuncuparalari[indis]+=pot;
+					pot=0;
+					oyuncuparalarlabel.get(0).setText(""+oyuncuparalari[0]+"$");
+					potlabel.setText(""+pot+"$");
+					if(confirmed==JOptionPane.YES_OPTION){
+						
+					}
+					
+				//}
 			}
 			bahisdongusu++;
 		}

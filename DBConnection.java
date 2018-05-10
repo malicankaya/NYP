@@ -12,7 +12,6 @@ public class DBConnection{ //veritabaný baðlantýsý saðlanacak
 	
 	private static Connection cn=null;
 	
-	
 	public static Connection baglanti() throws Exception{
 		
 		String url = "jdbc:mysql://" + host +":"+port+"/"+db;

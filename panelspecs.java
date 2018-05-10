@@ -67,7 +67,7 @@ public class panelspecs extends JPanel {//giriþ panelinin bütün özellikleri
 			if(arg0.getSource() == giris){
 				String k_adi = jtext1.getText();
 				String parola = jpw1.getText();
-				/*try{
+				try{
 					Connection baglan = (Connection) DBConnection.baglanti();
 					PreparedStatement statement = (PreparedStatement) baglan.prepareStatement("SELECT k_adi FROM `uyeler`");
 					ResultSet result = statement.executeQuery();
@@ -86,13 +86,15 @@ public class panelspecs extends JPanel {//giriþ panelinin bütün özellikleri
 						}
 				
 				}catch(Exception e){}
-				
+				if(!kullanicikontrol || !sifrekontrol){
+					JOptionPane.showMessageDialog(null, "Kullanýcý bulunamadý.","HATA",0);
+				}
 				if(kullanicikontrol && sifrekontrol){
 					MasaSecimi masasecildi = new MasaSecimi();
 					masasecildi.masayisec();
-				}*/
-				MasaSecimi masasecildi = new MasaSecimi();
-				masasecildi.masayisec();
+				}
+				/*MasaSecimi masasecildi = new MasaSecimi();
+				masasecildi.masayisec();*/
 			}
 			
 			

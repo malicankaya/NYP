@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
-
-public class Deste {
+public class Deste {// 52lik deste oluşturuyor
 	ArrayList<playcards> desteolustu = new ArrayList<playcards>();
 	int i;
 	Deste(){
